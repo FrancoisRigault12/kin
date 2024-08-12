@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Interactive avec Ajout de Marqueurs</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        #map {
+            height: 500px;
+            width: 100%;
+            margin-top: 10px;
+        }
+        #addMarkerButton {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Plan de Jeu Interactif</h1>
+    <button id="addMarkerButton">Ajouter un Marqueur</button>
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        var width = 2048, height = 2048;
+        var southWest = [height, 0],
+            northEast = [0, width];
+        var bounds = [southWest, northEast];
+
+        var map = L.map('map', {
+            crs: L.CRS.Simple, 
+            minZoom: -2,
+            maxBounds: bounds
+        });
+
+        L.imageOverlay('Chart.png', bounds).addTo(map);
+        map.fitBounds(bounds);
+
+        var addMarkerMode = false;
+
+        document.getElementById('addMarkerButton').addEventListener('click', function() {
+            addMarkerMode = !addMarkerMode;
+            if (addMarkerMode) {
+                this.textContent = "Cliquez sur la carte pour ajouter un marqueur";
+            } else {
+                this.textContent = "Ajouter un Marqueur";
+            }
+        });
+
+        map.on('click', function(e) {
+            if (addMarkerMode) {
+                var coord = e.latlng;
+                L.marker([coord.lat, coord.lng]).addTo(map)
+                    .bindPopup("Marqueur ajouté à (" + Math.round(coord.lat) + ", " + Math.round(coord.lng) + ")")
+                    .openPopup();
+
+                addMarkerMode = false;
+                document.getElementById('addMarkerButton').textContent = "Ajouter un Marqueur";
+            }
+        });
+
+    </script>
+</body>
+</html>
