@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carte Interactive avec Leaflet</title>
+    <!-- Inclure la feuille de style de Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        /* Définir la taille de la carte */
+        #map {
+            height: 500px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Ma Carte Interactive avec Leaflet</h1>
+    <!-- Conteneur pour la carte -->
+    <div id="map"></div>
+
+    <!-- Inclure la bibliothèque Leaflet -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialiser la carte et la centrer sur Paris avec un niveau de zoom de 13
+        var map = L.map('map').setView([48.8566, 2.3522], 13);
+
+        // Ajouter une couche de tuiles OpenStreetMap
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // Ajouter un marqueur sur Paris
+        var marker = L.marker([48.8566, 2.3522]).addTo(map);
+
+        // Ajouter un popup au marqueur
+        marker.bindPopup("<b>Paris</b><br>Capitale de la France.").openPopup();
+
+        // Ajouter un événement pour afficher les coordonnées au clic sur la carte
+        map.on('click', function(e) {
+            alert("Coordonnées : " + e.latlng.toString());
+        });
+
+        // Ajouter une échelle de mesure en bas à gauche
+        L.control.scale().addTo(map);
+    </script>
+</body>
+</html>
